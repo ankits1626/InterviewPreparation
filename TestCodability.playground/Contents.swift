@@ -61,10 +61,8 @@ func timeElapsedInSecondsWhenRunningCode(operation: ()->()) {
 
 /**
  Dynamic Programming : Coin Problem
- refernce: https://www.youtube.com/watch?v=-NTaXJ7BBXs
+ reference: https://www.youtube.com/watch?v=-NTaXJ7BBXs
  **/
-
-
 
 
 var resultMap = [Int : Int]()
@@ -93,9 +91,6 @@ func minCoins(_ availableCoins : [Int], total: Int, useMemoization: Bool) -> Int
     
     return ans
 }
-
-
-
 
 
 let coinDenominations = [1,5,7]
