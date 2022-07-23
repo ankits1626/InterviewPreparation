@@ -1,5 +1,16 @@
 import UIKit
 
+
+func timeElapsedInSecondsWhenRunningCode(operation: ()->()) {
+    let startTime = CFAbsoluteTimeGetCurrent()
+    operation()
+    let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+    print("time lapsed = \(Double(timeElapsed))")
+    print("----------------------- \n \n")
+}
+
+
+
 //var greeting = "Hello, playground"
 //
 //
@@ -46,13 +57,58 @@ import UIKit
 //print("steps = \(steps(85, 10, 30))")
 
 
-/**Dynamic Programming : Coin Problem **/
 
-func minCoins(_ availableCoins : [Int], total: Int) -> Int{
-    var ans = 0
+
+/**
+ Dynamic Programming : Coin Problem
+ refernce: https://www.youtube.com/watch?v=-NTaXJ7BBXs
+ **/
+
+
+
+
+var resultMap = [Int : Int]()
+
+func minCoins(_ availableCoins : [Int], total: Int, useMemoization: Bool) -> Int{
+    
+    var ans = Int.max
+    if total == 0{
+        return 0
+    }
+    if useMemoization,
+       let storedResult = resultMap[total]{
+        return storedResult
+    }
+    for coin in availableCoins {
+        if (total - coin) >= 0 {
+            let calc = minCoins(availableCoins, total: total - coin, useMemoization: useMemoization)
+            if calc < ans{
+                ans = calc + 1
+            }
+        }
+    }
+    if useMemoization{
+        resultMap[total] = ans
+    }
+    
     return ans
 }
 
 
-print("minimum coins required = \(minCoins([1,5,7], total: 18))")
+
+
+
+let coinDenominations = [1,5,7]
+let total  = 30
+
+timeElapsedInSecondsWhenRunningCode {
+    print("minimum coins required with memoization = \(minCoins(coinDenominations, total: total, useMemoization: true))")
+}
+
+
+timeElapsedInSecondsWhenRunningCode {
+    print("minimum coins required = \(minCoins(coinDenominations, total: total, useMemoization: false))")
+}
+
+print(resultMap.sorted(by: <))
 
